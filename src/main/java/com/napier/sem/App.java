@@ -1,32 +1,27 @@
 package com.napier.sem;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import com.napier.sem.db.DatabaseConnector;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class App {
 
     private final static Logger LOG = Logger.getLogger(String.valueOf(App.class));
-    public static void main(String[] args){
-        // Connect to MongoDB
-        MongoClient mongoClient = new MongoClient("mongo-dbserver");
-        // Get a database - will create when we use it
-        MongoDatabase database = mongoClient.getDatabase("mydb");
-        // Get a collection from the database
-        MongoCollection<Document> collection = database.getCollection("test");
-        // Create a document to store
-        Document doc = new Document("name", "Kevin Chalmers")
-                .append("class", "Software Engineering Methods")
-                .append("year", "2018/19")
-                .append("result", new Document("CW", 95).append("EX", 85));
-        // Add document to collection
-        collection.insertOne(doc);
 
-        // Check document in collection
-        Document myDoc = collection.find().first();
-        System.out.println(myDoc.toJson());
+    public static void main(String[] args) {
+        // Create new DatabaseConnector
+        DatabaseConnector connector = new DatabaseConnector();
+
+        // Connect to database
+        connector.connect();
+        // Get Employee
+        Employee emp = connector.getEmployee(255530);
+        // Display results
+        connector.displayEmployee(emp);
+        // Disconnect from database
+        connector.disconnect();
     }
 }
