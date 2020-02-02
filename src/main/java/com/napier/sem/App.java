@@ -17,7 +17,10 @@ public class App {
 
         // Connect to database
         connector.connect();
-
+        // Get Employee
+        Employee emp = connector.getEmployee(255530);
+        // Display results
+        connector.displayEmployee(emp);
         // Disconnect from database
         connector.disconnect();
     }

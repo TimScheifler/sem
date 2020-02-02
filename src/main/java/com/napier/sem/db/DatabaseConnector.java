@@ -59,6 +59,12 @@ public class DatabaseConnector {
         }
     }
 
+    /**
+     * Returns an Employee of an Specific ID. If the User can't be found, print an Error message.
+     *
+     * @param ID the ID of an Employee.
+     * @return an Employee.
+     */
     public Employee getEmployee(int ID){
         try
         {
@@ -89,6 +95,25 @@ public class DatabaseConnector {
             System.out.println(e.getMessage());
             System.out.println("Failed to get employee details");
             return null;
+        }
+    }
+
+    /**
+     * Prints all the data of a specific Employee.
+     * @param emp
+     */
+    public void displayEmployee(Employee emp)
+    {
+        if (emp != null)
+        {
+            System.out.println(
+                    emp.emp_no + " "
+                            + emp.first_name + " "
+                            + emp.last_name + "\n"
+                            + emp.title + "\n"
+                            + "Salary:" + emp.salary + "\n"
+                            + emp.dept_name + "\n"
+                            + "Manager: " + emp.manager + "\n");
         }
     }
 }
