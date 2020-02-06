@@ -36,7 +36,7 @@ public class DatabaseConnector {
                 // Connect to database
                 con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
                 LOG.info("Successfully connected.");
-                System.out.println("Successfully connected");
+                System.out.println("Successfully connected....edit");
                 break;
             } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + i);
@@ -125,6 +125,7 @@ public class DatabaseConnector {
      */
     public ArrayList<Employee> getAllSalaries()
     {
+        System.out.println("in getAllSalaries()");
         try
         {
             // Create an SQL statement
