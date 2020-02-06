@@ -2,9 +2,7 @@ package com.napier.sem;
 
 import com.napier.sem.db.DatabaseConnector;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class App {
@@ -17,10 +15,12 @@ public class App {
 
         // Connect to database
         connector.connect();
-        // Get Employee
-        Employee emp = connector.getEmployee(255530);
-        // Display results
-        connector.displayEmployee(emp);
+
+        ArrayList<Employee> employees = connector.getAllSalaries();
+        System.out.println("erreiche mich!");
+        //should be 24_0124
+        System.out.println(employees.size());
+
         // Disconnect from database
         connector.disconnect();
     }
