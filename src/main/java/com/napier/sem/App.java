@@ -19,7 +19,7 @@ public class App {
         ArrayList<Employee> employees = connector.getAllSalaries();
         //should be 24_0124
         System.out.println(employees.size());
-        connector.printSalaries(employees);
+        //connector.printSalaries(employees);   //commentet, because it's failing for some reason even though there are no errors.
 
         // Disconnect from database
         connector.disconnect();
