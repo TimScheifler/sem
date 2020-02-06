@@ -35,8 +35,8 @@ public class DatabaseConnector {
                 Thread.sleep(30_000);
                 // Connect to database
                 con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
-                LOG.info("Successfully connected.");
-                System.out.println("Successfully connected....edit");
+                System.out.println("Successfully connected");
+                Thread.sleep(5_000);
                 break;
             } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + i);

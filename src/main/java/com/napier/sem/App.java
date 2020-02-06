@@ -17,7 +17,6 @@ public class App {
         connector.connect();
 
         ArrayList<Employee> employees = connector.getAllSalaries();
-        System.out.println("erreiche mich!");
         //should be 24_0124
         System.out.println(employees.size());
 
