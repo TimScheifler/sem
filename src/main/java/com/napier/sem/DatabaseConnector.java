@@ -168,7 +168,7 @@ public class DatabaseConnector {
             Statement stmt = con.createStatement();
             String strSelect =
                     "SELECT dept_no, dept_name, manager "
-                            + "FROM department "
+                            + "FROM departments "
                             + "WHERE dept_name = " + dept_name;
             ResultSet rset = stmt.executeQuery(strSelect);
             if (rset.next()) {
