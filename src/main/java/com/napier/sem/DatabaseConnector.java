@@ -167,7 +167,7 @@ public class DatabaseConnector {
         try {
             Statement stmt = con.createStatement();
             String strSelect =
-                    "SELECT dept_no, dept_name, manager "
+                    "SELECT dept_no, dept_name "
                             + "FROM departments "
                             + "WHERE dept_name = " + dept_name;
             ResultSet rset = stmt.executeQuery(strSelect);
@@ -175,7 +175,6 @@ public class DatabaseConnector {
                 Department department = new Department();
                 department.dept_no = rset.getInt("dept_no");
                 department.dept_name = rset.getString("dept_name");
-                department.manager = (Employee) rset.getObject("manager");
 
                 return department;
             } else
