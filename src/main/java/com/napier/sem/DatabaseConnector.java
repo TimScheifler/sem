@@ -195,7 +195,7 @@ public class DatabaseConnector {
                 "AND employees.emp_no = dept_emp.emp_no\n" +
                 "AND dept_emp.dept_no = departments.dept_no\n" +
                 "AND salaries.to_date = '9999-01-01'\n" +
-                "AND departments.dept_no = "+department.dept_no+"\n" +
+                "AND departments.dept_no = Sales\n" +
                 "ORDER BY employees.emp_no ASC";
         try {
             ResultSet rset = stmt.executeQuery(statementString);
