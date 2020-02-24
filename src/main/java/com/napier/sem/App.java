@@ -21,7 +21,9 @@ public class App {
         //connector.printSalaries(employees);   //commented, because it's failing for some reason even though there are no errors.
 
 
-        ArrayList<Employee> employees1 = connector.getSalariesByDepartment(connector.getDepartment("Sales"));
+        Department department = connector.getDepartment("Sales");
+        System.out.println(department);
+        ArrayList<Employee> employees1 = connector.getSalariesByDepartment(department);
         for (Employee employee : employees1){
             System.out.println(employee);
         }
