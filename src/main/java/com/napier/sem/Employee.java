@@ -30,10 +30,15 @@ public class Employee
     /**
      * Employee's current department
      */
-    public String dept_name;
+    public Department dept;
 
     /**
      * Employee's manager
      */
-    public String manager;
+    public Employee manager;
+
+    @Override
+    public String toString(){
+        return emp_no+" "+first_name+" "+last_name+" "+title+" "+salary+" "+dept+" | Manager: "+manager;
+    }
 }

@@ -1,6 +1,4 @@
-package com.napier.sem.db;
-
-import com.napier.sem.Employee;
+package com.napier.sem;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,10 +30,10 @@ public class DatabaseConnector {
             System.out.println("Connecting to database...");
             try {
                 // Wait a bit for db to start
-                Thread.sleep(30_000);
+                Thread.sleep(20_000);
                 // Connect to database
                 con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
-                System.out.println("Successfully connected");
+                System.out.println("Successfully connected..");
                 Thread.sleep(5_000);
                 break;
             } catch (SQLException sqle) {
@@ -49,15 +47,14 @@ public class DatabaseConnector {
 
     /**
      * Prints a list of employees.
+     *
      * @param employees The list of employees to print.
      */
-    public void printSalaries(ArrayList<Employee> employees)
-    {
+    public void printSalaries(ArrayList<Employee> employees) {
         // Print header
         System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
         // Loop over all employees in the list
-        for (Employee emp : employees)
-        {
+        for (Employee emp : employees) {
             String emp_string =
                     String.format("%-10s %-15s %-20s %-8s",
                             emp.emp_no, emp.first_name, emp.last_name, emp.salary);
@@ -85,9 +82,8 @@ public class DatabaseConnector {
      * @param ID the ID of an Employee.
      * @return an Employee.
      */
-    public Employee getEmployee(int ID){
-        try
-        {
+    public Employee getEmployee(int ID) {
+        try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
@@ -99,19 +95,15 @@ public class DatabaseConnector {
             ResultSet rset = stmt.executeQuery(strSelect);
             // Return new employee if valid.
             // Check one is returned
-            if (rset.next())
-            {
+            if (rset.next()) {
                 Employee emp = new Employee();
                 emp.emp_no = rset.getInt("emp_no");
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
                 return emp;
-            }
-            else
+            } else
                 return null;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get employee details");
             return null;
@@ -120,32 +112,29 @@ public class DatabaseConnector {
 
     /**
      * Prints all the data of a specific Employee.
+     *
      * @param emp an Employee.
      */
-    public void displayEmployee(Employee emp)
-    {
-        if (emp != null)
-        {
+    public void displayEmployee(Employee emp) {
+        if (emp != null) {
             System.out.println(
                     emp.emp_no + " "
                             + emp.first_name + " "
                             + emp.last_name + "\n"
                             + emp.title + "\n"
                             + "Salary:" + emp.salary + "\n"
-                            + emp.dept_name + "\n"
+                            + emp.dept + "\n"
                             + "Manager: " + emp.manager + "\n");
         }
     }
 
     /**
      * Gets all the current employees and salaries.
+     *
      * @return A list of all employees and salaries, or null if there is an error.
      */
-    public ArrayList<Employee> getAllSalaries()
-    {
-        System.out.println("in getAllSalaries()");
-        try
-        {
+    public ArrayList<Employee> getAllSalaries() {
+        try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
@@ -158,8 +147,7 @@ public class DatabaseConnector {
             ResultSet rset = stmt.executeQuery(strSelect);
             // Extract employee information
             ArrayList<Employee> employees = new ArrayList<>();
-            while (rset.next())
-            {
+            while (rset.next()) {
                 Employee emp = new Employee();
                 emp.emp_no = rset.getInt("employees.emp_no");
                 emp.first_name = rset.getString("employees.first_name");
@@ -168,9 +156,62 @@ public class DatabaseConnector {
                 employees.add(emp);
             }
             return employees;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get salary details");
+            return null;
         }
-        catch (Exception e)
-        {
+    }
+
+    public Department getDepartment(String dept_name) {
+        try {
+            Statement stmt = con.createStatement();
+            String strSelect =
+                    "SELECT dept_no, dept_name, manager "
+                            + "FROM department "
+                            + "WHERE dept_name = " + dept_name;
+            ResultSet rset = stmt.executeQuery(strSelect);
+            if (rset.next()) {
+                Department department = new Department();
+                department.dept_no = rset.getInt("dept_no");
+                department.dept_name = rset.getString("dept_name");
+                department.manager = (Employee) rset.getObject("manager");
+
+                return department;
+            } else
+                return null;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get department details");
+            return null;
+        }
+    }
+
+
+    public ArrayList<Employee> getSalariesByDepartment(Department department) throws SQLException {
+        Statement stmt = con.createStatement();
+        String statementString = "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary" +
+                "FROM employees, salaries, dept_emp, departments" +
+                "WHERE employees.emp_no = salaries.emp_no" +
+                "AND employees.emp_no = dept_emp.emp_no" +
+                "AND dept_emp.dept_no = departments.dept_no" +
+                "AND salaries.to_date = '9999-01-01'" +
+                "AND departments.dept_no =  " + department.dept_no +
+                "ORDER BY employees.emp_no ASC";
+        try {
+            ResultSet rset = stmt.executeQuery(statementString);
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<>();
+            while (rset.next()) {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
+                employees.add(emp);
+            }
+            return employees;
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get salary details");
             return null;
